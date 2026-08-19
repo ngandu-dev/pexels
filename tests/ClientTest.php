@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Tests;
+namespace Ngandu\Pexels\Tests;
 
-use Devscast\Pexels\Client;
-use Devscast\Pexels\Data\Collection;
-use Devscast\Pexels\Data\CollectionMedia;
-use Devscast\Pexels\Data\Collections;
-use Devscast\Pexels\Data\Photo;
-use Devscast\Pexels\Data\Photos;
-use Devscast\Pexels\Data\Video;
-use Devscast\Pexels\Data\Videos;
+use Ngandu\Pexels\Client;
+use Ngandu\Pexels\Data\Collection;
+use Ngandu\Pexels\Data\CollectionMedia;
+use Ngandu\Pexels\Data\Collections;
+use Ngandu\Pexels\Data\Photo;
+use Ngandu\Pexels\Data\Photos;
+use Ngandu\Pexels\Data\Video;
+use Ngandu\Pexels\Data\Videos;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 /**
  * Class ClientTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class ClientTest extends TestCase
 {

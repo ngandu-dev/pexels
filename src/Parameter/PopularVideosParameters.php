@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Parameter;
+namespace Ngandu\Pexels\Parameter;
 
-use Devscast\Pexels\Mapper;
+use Ngandu\Pexels\Mapper;
 use Override;
 use Webmozart\Assert\Assert;
 
 /**
  * class PopularVideosParameters.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class PopularVideosParameters extends Parameters
 {

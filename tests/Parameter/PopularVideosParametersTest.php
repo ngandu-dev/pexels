@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Tests\Parameter;
+namespace Ngandu\Pexels\Tests\Parameter;
 
-use Devscast\Pexels\Parameter\PopularVideosParameters;
+use Ngandu\Pexels\Parameter\PopularVideosParameters;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class PopularVideosParametersTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 class PopularVideosParametersTest extends TestCase
 {

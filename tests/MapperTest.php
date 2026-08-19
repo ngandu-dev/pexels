@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Tests;
+namespace Ngandu\Pexels\Tests;
 
-use Devscast\Pexels\Mapper;
+use Ngandu\Pexels\Mapper;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * Class MapperTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class MapperTest extends TestCase
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels;
+namespace Ngandu\Pexels;
 
 use ReflectionClass;
 
 /**
  * class Mapper.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 abstract class Mapper
 {

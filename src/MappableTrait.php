@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels;
+namespace Ngandu\Pexels;
 
 /**
  * trait MappingTrait.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 trait MappableTrait
 {

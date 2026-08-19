@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Exception;
+namespace Ngandu\Pexels\Exception;
 
 /**
  * Class AccountException.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 class AccountException extends NetworkException
 {

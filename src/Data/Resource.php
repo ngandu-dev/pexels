@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Data;
+namespace Ngandu\Pexels\Data;
 
 /**
  * class Resource.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 abstract class Resource
 {

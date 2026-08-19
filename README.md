@@ -1,12 +1,25 @@
 # Pexels PHP
 
-![Lint](https://github.com/devscast/pexels/actions/workflows/lint.yaml/badge.svg)
-![Test](https://github.com/devscast/pexels/actions/workflows/test.yaml/badge.svg)
-[![Latest Stable Version](https://poser.pugx.org/devscast/pexels/version)](https://packagist.org/packages/devscast/pexels)
-[![Total Downloads](https://poser.pugx.org/devscast/pexels/downloads)](https://packagist.org/packages/devscast/pexels)
-[![License](https://poser.pugx.org/devscast/pexels/license)](https://packagist.org/packages/devscast/pexels)
+[![Latest Stable Version](https://poser.pugx.org/ngandu-dev/pexels/version)](https://packagist.org/packages/ngandu-dev/pexels)
+[![Total Downloads](https://poser.pugx.org/ngandu-dev/pexels/downloads)](https://packagist.org/packages/ngandu-dev/pexels)
+[![Quality](https://github.com/ngandu-dev/pexels/actions/workflows/quality.yml/badge.svg)](https://github.com/ngandu-dev/pexels/actions/workflows/quality.yml)
+[![Tests](https://github.com/ngandu-dev/pexels/actions/workflows/test.yml/badge.svg)](https://github.com/ngandu-dev/pexels/actions/workflows/test.yml)
+[![License](https://poser.pugx.org/ngandu-dev/pexels/license)](https://packagist.org/packages/ngandu-dev/pexels)
 
 The Pexels API enables programmatic access to the full Pexels content library, including photos, videos. All content is available free of charge, and you are welcome to use Pexels content for anything you'd like, as long as it is within our Guidelines.
+
+## Features
+
+- Photo and video search
+- Curated and popular media
+- Featured and personal collections
+- Typed pagination and response objects
+
+## Requirements
+
+- PHP 8.4 or later
+- Composer 2
+- A Pexels API key
 
 ## Guidelines
 
@@ -23,9 +36,9 @@ Abuse of the Pexels API, including but not limited to attempting to work around 
 ## Authorization
 Authorization is required for the Pexels API. Anyone with a Pexels account can [request an API key](https://www.pexels.com/api/new/), which you will receive instantly.
 
-## Install
+## Installation
 ```bash
-composer require devscast/pexels
+composer require ngandu-dev/pexels
 ```
 
 ## Usage
@@ -33,7 +46,7 @@ Create an instance of the Pexels API Client by passing in your API token as para
 
 ```php
 // ...
-use Devscast\Pexels\Client;
+use Ngandu\Pexels\Client;
 // ...
 
 $pexels = new Client(token: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx');
@@ -128,9 +141,28 @@ Most Pexels API requests return multiple records at once. All of these endpoints
 Note: The prev_page and next_page response attributes will only be returned if there is a corresponding page.
 
 
+## Development
+
+```bash
+composer install
+composer format
+composer quality
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request.
+
+## Security
+
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+
+## License
+
+Released under the [MIT License](LICENSE).
+
 ## Contributors
 
-<a href="https://github.com/devscast/pexels/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=devscast/pexels"/>
+<a href="https://github.com/ngandu-dev/pexels/graphs/contributors" title="Show all contributors">
+  <img src="https://contrib.rocks/image?repo=ngandu-dev/pexels" alt="Contributors" />
 </a>
-

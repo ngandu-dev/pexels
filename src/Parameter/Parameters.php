@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Parameter;
+namespace Ngandu\Pexels\Parameter;
 
-use Devscast\Pexels\Mapper;
+use Ngandu\Pexels\Mapper;
 use Webmozart\Assert\Assert;
 
 /**
  * class Parameters.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 abstract class Parameters
 {

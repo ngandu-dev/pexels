@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Parameter;
+namespace Ngandu\Pexels\Parameter;
 
 /**
  * class PaginationParameters.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class PaginationParameters extends Parameters
 {

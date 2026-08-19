@@ -1,5 +1,5 @@
 {
-    "name": "devscast/pexels",
+    "name": "ngandu-dev/pexels",
     "description": "PHP client for https://pexels.com",
     "keywords": [
         "pexels",
@@ -9,22 +9,27 @@
     ],
     "type": "library",
     "license": "MIT",
+    "homepage": "https://github.com/ngandu-dev/pexels",
     "autoload": {
         "psr-4": {
-            "Devscast\\Pexels\\": "src/"
+            "Ngandu\\Pexels\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Devscast\\Pexels\\Tests\\": "tests/"
+            "Ngandu\\Pexels\\Tests\\": "tests/"
         }
     },
     "authors": [
         {
             "name": "bernard-ng",
-            "email": "bernard@devscast.tech"
+            "email": "bernard@ngandu.dev"
         }
     ],
+    "support": {
+        "issues": "https://github.com/ngandu-dev/pexels/issues",
+        "source": "https://github.com/ngandu-dev/pexels"
+    },
     "minimum-stability": "stable",
     "require-dev": {
         "symfony/var-dumper": "^7.0|^8.0",
@@ -40,5 +45,12 @@
         "symfony/serializer": "^7.0|^8.0",
         "symfony/property-access": "^7.0|^8.0",
         "webmozart/assert": "^1.11"
+    },
+    "scripts": {
+        "format": ["php vendor/bin/ecs check --fix --ansi", "php vendor/bin/rector process --ansi"],
+        "lint": ["php vendor/bin/ecs check --ansi", "php vendor/bin/rector process --dry-run --ansi"],
+        "typecheck": "php vendor/bin/phpstan analyse --ansi",
+        "test": "php vendor/bin/phpunit --colors=always",
+        "quality": ["@lint", "@typecheck", "@test"]
     }
 }

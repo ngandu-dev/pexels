@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Tests\Parameter;
+namespace Ngandu\Pexels\Tests\Parameter;
 
-use Devscast\Pexels\Parameter\PaginationParameters;
 use InvalidArgumentException;
+use Ngandu\Pexels\Parameter\PaginationParameters;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class PaginationParametersTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class PaginationParametersTest extends TestCase
 {

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels;
+namespace Ngandu\Pexels;
 
-use Devscast\Pexels\Data\Collection;
-use Devscast\Pexels\Data\CollectionMedia;
-use Devscast\Pexels\Data\Collections;
-use Devscast\Pexels\Data\Photo;
-use Devscast\Pexels\Data\Photos;
-use Devscast\Pexels\Data\Video;
-use Devscast\Pexels\Data\Videos;
-use Devscast\Pexels\Exception\NetworkException;
-use Devscast\Pexels\Parameter\CollectionParameters;
-use Devscast\Pexels\Parameter\PaginationParameters;
-use Devscast\Pexels\Parameter\PopularVideosParameters;
-use Devscast\Pexels\Parameter\SearchParameters;
 use Exception;
+use Ngandu\Pexels\Data\Collection;
+use Ngandu\Pexels\Data\CollectionMedia;
+use Ngandu\Pexels\Data\Collections;
+use Ngandu\Pexels\Data\Photo;
+use Ngandu\Pexels\Data\Photos;
+use Ngandu\Pexels\Data\Video;
+use Ngandu\Pexels\Data\Videos;
+use Ngandu\Pexels\Exception\NetworkException;
+use Ngandu\Pexels\Parameter\CollectionParameters;
+use Ngandu\Pexels\Parameter\PaginationParameters;
+use Ngandu\Pexels\Parameter\PopularVideosParameters;
+use Ngandu\Pexels\Parameter\SearchParameters;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\Retry\GenericRetryStrategy;
 use Symfony\Component\HttpClient\RetryableHttpClient;
@@ -30,7 +30,7 @@ use Throwable;
 /**
  * class Client.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final readonly class Client
 {

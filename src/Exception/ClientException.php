@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Exception;
+namespace Ngandu\Pexels\Exception;
 
 /**
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class ClientException extends NetworkException
 {

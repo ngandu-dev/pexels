@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Parameter;
+namespace Ngandu\Pexels\Parameter;
 
 use Webmozart\Assert\Assert;
 
 /**
  * class CollectionParameters.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 final class CollectionParameters extends Parameters
 {

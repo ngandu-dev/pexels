@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Exception;
+namespace Ngandu\Pexels\Exception;
 
 use Exception;
 use Throwable;
@@ -10,7 +10,7 @@ use Throwable;
 /**
  * Class NetworkException.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  * @template T
  * @phpstan-template T
  */

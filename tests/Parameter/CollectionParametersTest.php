@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Devscast\Pexels\Tests\Parameter;
+namespace Ngandu\Pexels\Tests\Parameter;
 
-use Devscast\Pexels\Parameter\CollectionParameters;
 use InvalidArgumentException;
+use Ngandu\Pexels\Parameter\CollectionParameters;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class CollectionParametersTest.
  *
- * @author bernard-ng <bernard@devscast.tech>
+ * @author bernard-ng <bernard@ngandu.dev>
  */
 class CollectionParametersTest extends TestCase
 {
