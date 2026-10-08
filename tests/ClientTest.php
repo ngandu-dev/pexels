@@ -12,8 +12,9 @@ use Ngandu\Pexels\Data\Photo;
 use Ngandu\Pexels\Data\Photos;
 use Ngandu\Pexels\Data\Video;
 use Ngandu\Pexels\Data\Videos;
+use Ngandu\Pexels\Exception\AccountException;
+use Ngandu\Pexels\Exception\ServerException;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
@@ -36,7 +37,10 @@ final class ClientTest extends TestCase
 
     public function testSearchVideos(): void
     {
-        $pexels = $this->getPexels(fn ($method, $url, $options): MockResponse => $this->getResponse('search_videos.json'));
+        $pexels = $this->getPexels(function ($method, string $url, $options): MockResponse {
+            $this->assertStringEndsWith('/v1/videos/search?query=westie%20dog&locale=en-US&page=1&per_page=15', $url);
+            return $this->getResponse('search_videos.json');
+        });
 
         $videos = $pexels->searchVideos('westie dog');
 
@@ -55,7 +59,10 @@ final class ClientTest extends TestCase
 
     public function testVideo(): void
     {
-        $pexels = $this->getPexels(fn ($method, $url, $options): MockResponse => $this->getResponse('video.json'));
+        $pexels = $this->getPexels(function ($method, string $url, $options): MockResponse {
+            $this->assertStringEndsWith('/v1/videos/videos/33', $url);
+            return $this->getResponse('video.json');
+        });
 
         $videos = $pexels->video(33);
 
@@ -64,7 +71,10 @@ final class ClientTest extends TestCase
 
     public function testPopularVideos(): void
     {
-        $pexels = $this->getPexels(fn ($method, $url, $options): MockResponse => $this->getResponse('popular_videos.json'));
+        $pexels = $this->getPexels(function ($method, string $url, $options): MockResponse {
+            $this->assertStringEndsWith('/v1/videos/popular?page=1&per_page=15', $url);
+            return $this->getResponse('popular_videos.json');
+        });
 
         $videos = $pexels->popularVideos();
 
@@ -72,7 +82,7 @@ final class ClientTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Video::class, $videos->videos);
     }
 
-    public function curatedPhotos(): void
+    public function testCuratedPhotos(): void
     {
         $pexels = $this->getPexels(fn ($method, $url, $options): MockResponse => $this->getResponse('curated_photos.json'));
 
@@ -122,36 +132,44 @@ final class ClientTest extends TestCase
         }
     }
 
+    public function testAccountErrorPreservesClassificationStatusAndCause(): void
+    {
+        $pexels = $this->getPexels(new MockResponse('{"error":"Unauthorized"}', [
+            'http_code' => 401,
+        ]));
+
+        try {
+            $pexels->photo(33);
+            $this->fail('Expected an account exception.');
+        } catch (AccountException $accountException) {
+            $this->assertSame(401, $accountException->status);
+            $this->assertSame('{"error":"Unauthorized"}', $accountException->getMessage());
+            $this->assertNotNull($accountException->getPrevious());
+        }
+    }
+
+    public function testServerErrorPreservesClassificationAndStatus(): void
+    {
+        $pexels = $this->getPexels(new MockResponse('Unavailable', [
+            'http_code' => 503,
+        ]));
+
+        try {
+            $pexels->photo(33);
+            $this->fail('Expected a server exception.');
+        } catch (ServerException $serverException) {
+            $this->assertSame(503, $serverException->status);
+            $this->assertSame('Unavailable', $serverException->getMessage());
+        }
+    }
+
     private function getPexels(callable|MockResponse $mock): Client
     {
-        $pexels = new Client('your_token');
-        $this->setValue($pexels, 'http', new MockHttpClient($mock));
-
-        /** @var Client $pexels */
-        return $pexels;
+        return new Client('your_token', http: new MockHttpClient($mock));
     }
 
     private function getResponse(string $file): MockResponse
     {
         return new MockResponse((string) file_get_contents(__DIR__ . ('/responses/' . $file)));
-    }
-
-    private function setValue(object &$object, string $propertyName, mixed $value): void
-    {
-        $reflectionClass = new ReflectionClass($object);
-
-        if ($reflectionClass->getProperty($propertyName)->isReadOnly()) {
-            $mutable = $reflectionClass->newInstanceWithoutConstructor();
-
-            foreach ($reflectionClass->getProperties() as $property) {
-                if ($property->isInitialized($object) && $property->name != $propertyName) {
-                    $reflectionClass->getProperty($property->name)->setValue($mutable, $property->getValue($object));
-                }
-            }
-
-            $object = $mutable;
-        }
-
-        $reflectionClass->getProperty($propertyName)->setValue($object, $value);
     }
 }

@@ -115,7 +115,7 @@ This endpoint returns all featured collections on Pexels.
 $collections = $pexels->featuredCollections();
 
 // paginated
-$collections = $pexels->featuredCollection(new PaginationParameters(per_page: 80);
+$collections = $pexels->featuredCollections(new PaginationParameters(per_page: 80));
 ```
 
 ### My Collections
@@ -132,7 +132,7 @@ This endpoint returns all the media (photos and videos) within a single collecti
 $collection = $pexels->collection(id: 'someid');
 
 // videos only
-$collection = $pexels->collection(id: 'someid', new CollectionParameters(type: 'Videos'));
+$collection = $pexels->collection(id: 'someid', parameters: new CollectionParameters(type: 'videos'));
 ```
 
 ## Pagination

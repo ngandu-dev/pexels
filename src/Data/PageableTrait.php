@@ -27,12 +27,12 @@ trait PageableTrait
     public ?int $total_results = null;
 
     /**
-     * @var string|null URL for the previous page of results, if applicable.
+     * @var string|null URL for the next page of results, if applicable.
      */
     public ?string $next_page = null;
 
     /**
-     * @var string|null URL for the next page of results, if applicable.
+     * @var string|null URL for the previous page of results, if applicable.
      */
     public ?string $prev_page = null;
 }

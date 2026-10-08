@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ngandu\Pexels\Tests\Parameter;
 
+use InvalidArgumentException;
 use Ngandu\Pexels\Parameter\PopularVideosParameters;
 use PHPUnit\Framework\TestCase;
 
@@ -46,6 +47,24 @@ class PopularVideosParametersTest extends TestCase
         $this->assertNull($params->min_height);
         $this->assertNull($params->min_duration);
         $this->assertNull($params->max_duration);
+    }
+
+    public function testOneIsAcceptedAsAMinimumValue(): void
+    {
+        $params = new PopularVideosParameters(min_width: 1, min_height: 1, min_duration: 1, max_duration: 1);
+
+        $this->assertSame(1, $params->min_width);
+        $this->assertSame(1, $params->min_height);
+        $this->assertSame(1, $params->min_duration);
+        $this->assertSame(1, $params->max_duration);
+    }
+
+    public function testMaximumDurationCannotBeLessThanMinimumDuration(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Maximum duration must not be less than minimum duration.');
+
+        new PopularVideosParameters(min_duration: 10, max_duration: 9);
     }
 
     public function testToArrayMethod(): void

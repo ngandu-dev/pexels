@@ -28,7 +28,7 @@ abstract class Parameters
     {
         Assert::greaterThanEq($page, 1);
         Assert::lessThanEq($per_page, 80);
-        Assert::greaterThanEq($per_page, 15);
+        Assert::greaterThanEq($per_page, 1);
 
         $this->page = $page;
         $this->per_page = $per_page;

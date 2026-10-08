@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Ngandu\Pexels\Parameter;
 
-use Ngandu\Pexels\Mapper;
-use Override;
 use Webmozart\Assert\Assert;
 
 /**
@@ -44,20 +42,18 @@ final class PopularVideosParameters extends Parameters
         int $per_page = 15
     ) {
         parent::__construct($page, $per_page);
-        Assert::nullOrGreaterThan($min_duration, 1);
-        Assert::nullOrGreaterThan($max_duration, 1);
-        Assert::nullOrGreaterThan($min_width, 1);
-        Assert::nullOrGreaterThan($min_height, 1);
+        Assert::nullOrGreaterThanEq($min_duration, 1);
+        Assert::nullOrGreaterThanEq($max_duration, 1);
+        Assert::nullOrGreaterThanEq($min_width, 1);
+        Assert::nullOrGreaterThanEq($min_height, 1);
+
+        if ($min_duration !== null && $max_duration !== null) {
+            Assert::greaterThanEq($max_duration, $min_duration, 'Maximum duration must not be less than minimum duration.');
+        }
 
         $this->min_width = $min_width;
         $this->min_height = $min_height;
         $this->min_duration = $min_duration;
         $this->max_duration = $max_duration;
-    }
-
-    #[Override]
-    public function toArray(): array
-    {
-        return array_filter(Mapper::toArray([], $this), fn ($p): bool => $p !== null);
     }
 }

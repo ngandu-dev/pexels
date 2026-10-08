@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ngandu\Pexels;
 
-use Exception;
 use Ngandu\Pexels\Data\Collection;
 use Ngandu\Pexels\Data\CollectionMedia;
 use Ngandu\Pexels\Data\Collections;
@@ -23,9 +22,9 @@ use Symfony\Component\HttpClient\RetryableHttpClient;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Throwable;
 
 /**
  * class Client.
@@ -38,10 +37,10 @@ final readonly class Client
 
     private Serializer $serializer;
 
-    public function __construct(string $token, ?string $proxy = null)
+    public function __construct(string $token, ?string $proxy = null, ?HttpClientInterface $http = null)
     {
         $this->serializer = new Serializer(normalizers: [new ObjectNormalizer()]);
-        $this->http = new RetryableHttpClient(
+        $this->http = $http ?? new RetryableHttpClient(
             client: HttpClient::createForBaseUri(
                 baseUri: 'https://api.pexels.com',
                 defaultOptions: [
@@ -65,22 +64,13 @@ final readonly class Client
      */
     public function searchPhotos(string $query, SearchParameters $parameters = new SearchParameters()): Photos
     {
-        try {
-            /** @var Photos $mapped */
-            $mapped = $this->getMappedData(
-                Photos::class,
-                $this->http->request('GET', '/v1/search', [
-                    'query' => [
-                        'query' => $query,
-                        ...$parameters->toArray(),
-                    ],
-                ])->toArray()
-            );
+        /** @var Photos $mapped */
+        $mapped = $this->getMappedData(Photos::class, $this->request('/v1/search', [
+            'query' => $query,
+            ...$parameters->toArray(),
+        ]));
 
-            return $mapped;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $mapped;
     }
 
     /**
@@ -92,22 +82,13 @@ final readonly class Client
      */
     public function searchVideos(string $query, SearchParameters $parameters = new SearchParameters()): Videos
     {
-        try {
-            /** @var Videos $mapped */
-            $mapped = $this->getMappedData(
-                Videos::class,
-                $this->http->request('GET', '/videos/search', [
-                    'query' => [
-                        'query' => $query,
-                        ...$parameters->toArray(),
-                    ],
-                ])->toArray()
-            );
+        /** @var Videos $mapped */
+        $mapped = $this->getMappedData(Videos::class, $this->request('/v1/videos/search', [
+            'query' => $query,
+            ...$parameters->toArray(),
+        ]));
 
-            return $mapped;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $mapped;
     }
 
     /**
@@ -119,21 +100,10 @@ final readonly class Client
      */
     public function curatedPhotos(PaginationParameters $parameters = new PaginationParameters()): Photos
     {
-        try {
-            /** @var Photos $mapped */
-            $mapped = $this->getMappedData(
-                type: Photos::class,
-                data: $this->http->request('GET', '/v1/curated', [
-                    'query' => [
-                        ...$parameters->toArray(),
-                    ],
-                ])->toArray()
-            );
+        /** @var Photos $mapped */
+        $mapped = $this->getMappedData(Photos::class, $this->request('/v1/curated', $parameters->toArray()));
 
-            return $mapped;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $mapped;
     }
 
     /**
@@ -143,21 +113,10 @@ final readonly class Client
      */
     public function popularVideos(PopularVideosParameters $parameters = new PopularVideosParameters()): Videos
     {
-        try {
-            /** @var Videos $mapped */
-            $mapped = $this->getMappedData(
-                Videos::class,
-                $this->http->request('GET', '/videos/popular', [
-                    'query' => [
-                        ...$parameters->toArray(),
-                    ],
-                ])->toArray()
-            );
+        /** @var Videos $mapped */
+        $mapped = $this->getMappedData(Videos::class, $this->request('/v1/videos/popular', $parameters->toArray()));
 
-            return $mapped;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $mapped;
     }
 
     /**
@@ -167,14 +126,10 @@ final readonly class Client
      */
     public function photo(int $id): Photo
     {
-        try {
-            $data = $this->http->request('GET', '/v1/photos/' . $id)->toArray();
-            /** @var Photo $photo */
-            $photo = $this->serializer->denormalize($data, Photo::class);
-            return $photo;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        /** @var Photo $photo */
+        $photo = $this->serializer->denormalize($this->request('/v1/photos/' . $id), Photo::class);
+
+        return $photo;
     }
 
     /**
@@ -184,15 +139,10 @@ final readonly class Client
      */
     public function video(int $id): Video
     {
-        try {
-            $data = $this->http->request('GET', '/videos/videos/' . $id)->toArray();
-            /** @var Video $video */
-            $video = $this->serializer->denormalize($data, Video::class);
+        /** @var Video $video */
+        $video = $this->serializer->denormalize($this->request('/v1/videos/videos/' . $id), Video::class);
 
-            return $video;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $video;
     }
 
     /**
@@ -201,21 +151,13 @@ final readonly class Client
      */
     public function featuredCollections(PaginationParameters $parameters = new PaginationParameters()): Collections
     {
-        try {
-            /** @var Collections $mapped */
-            $mapped = $this->getMappedData(
-                type: Collections::class,
-                data: $this->http->request('GET', '/v1/collections/featured', [
-                    'query' => [
-                        ...$parameters->toArray(),
-                    ],
-                ])->toArray()
-            );
+        /** @var Collections $mapped */
+        $mapped = $this->getMappedData(
+            Collections::class,
+            $this->request('/v1/collections/featured', $parameters->toArray())
+        );
 
-            return $mapped;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $mapped;
     }
 
     /**
@@ -224,21 +166,10 @@ final readonly class Client
      */
     public function collections(PaginationParameters $parameters = new PaginationParameters()): Collections
     {
-        try {
-            /** @var Collections $mapped */
-            $mapped = $this->getMappedData(
-                type: Collections::class,
-                data: $this->http->request('GET', '/v1/collections', [
-                    'query' => [
-                        ...$parameters->toArray(),
-                    ],
-                ])->toArray()
-            );
+        /** @var Collections $mapped */
+        $mapped = $this->getMappedData(Collections::class, $this->request('/v1/collections', $parameters->toArray()));
 
-            return $mapped;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $mapped;
     }
 
     /**
@@ -249,46 +180,50 @@ final readonly class Client
      */
     public function collection(string $id, CollectionParameters $parameters = new CollectionParameters()): CollectionMedia
     {
-        try {
-            /** @var CollectionMedia $mapped */
-            $mapped = $this->getMappedData(
-                type: CollectionMedia::class,
-                data: $this->http->request('GET', '/v1/collections/' . $id, [
-                    'query' => [
-                        ...$parameters->toArray(),
-                    ],
-                ])->toArray()
-            );
+        /** @var CollectionMedia $mapped */
+        $mapped = $this->getMappedData(
+            CollectionMedia::class,
+            $this->request('/v1/collections/' . $id, $parameters->toArray())
+        );
 
-            return $mapped;
-        } catch (Throwable $throwable) {
-            $this->createExceptionFromResponse($throwable);
-        }
+        return $mapped;
     }
 
     /**
      * @throws NetworkException
      */
-    private function createExceptionFromResponse(Throwable $exception): never
+    private function createExceptionFromResponse(HttpClientExceptionInterface $exception): never
     {
         if ($exception instanceof HttpExceptionInterface) {
-            try {
-                $response = $exception->getResponse();
-                throw NetworkException::create(
-                    message: $response->getContent(false),
-                    status: $response->getStatusCode()
-                );
-            } catch (Throwable $exception) {
-                throw new NetworkException($exception->getMessage());
-            }
-        } else {
-            throw new NetworkException($exception->getMessage());
+            $response = $exception->getResponse();
+            throw NetworkException::create(
+                message: $response->getContent(false),
+                status: $response->getStatusCode(),
+                previous: $exception
+            );
+        }
+
+        throw new NetworkException($exception->getMessage(), previous: $exception);
+    }
+
+    /**
+     * @param array<string, mixed> $query
+     * @return array<string, mixed>
+     * @throws NetworkException
+     */
+    private function request(string $path, array $query = []): array
+    {
+        try {
+            return $this->http->request('GET', $path, [
+                'query' => $query,
+            ])->toArray();
+        } catch (HttpClientExceptionInterface $httpClientException) {
+            $this->createExceptionFromResponse($httpClientException);
         }
     }
 
     /**
      * @throws ExceptionInterface
-     * @throws Exception
      * @param array<string, mixed> $data
      */
     private function getMappedData(string $type, array $data): Photos|Videos|Collections|CollectionMedia

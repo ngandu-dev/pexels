@@ -31,10 +31,17 @@ final class PaginationParametersTest extends TestCase
     public function testConstructorWithInvalidPerPage(): void
     {
         // Test case: Invalid per_page parameter provided
-        $invalidPerPage = 10;
+        $invalidPerPage = 0;
 
         $this->expectException(InvalidArgumentException::class);
         new PaginationParameters(1, $invalidPerPage);
+    }
+
+    public function testConstructorAcceptsOneResultPerPage(): void
+    {
+        $parameters = new PaginationParameters(per_page: 1);
+
+        $this->assertSame(1, $parameters->per_page);
     }
 
     public function testConstructorWithNegativeValues(): void
